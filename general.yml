@@ -1,0 +1,36 @@
+- hosts: localhost
+  connection: local
+  gather_facts: no
+  sudo: no
+  roles:
+    - homebrew
+    - homebrew-cask
+    - ruby-build
+  vars:
+    homebrew_repositories:
+
+    homebrew_packages:
+      - readline
+      - openssl
+      - { name: openssl, state: linked, install_options: force }
+      - ansible
+      - git
+      - rbenv
+      - ruby-build
+      - vim
+      - mysql
+      - postgresql
+      - imagemagick
+
+    homebrew_cask_repositories:
+      - caskroom/versions
+
+    homebrew_cask_packages:
+      - firefox-ja
+      - google-chrome
+      - karabiner
+      - atom
+      - vagrant
+      - virtualbox
+      - sourcetree
+      - mi
