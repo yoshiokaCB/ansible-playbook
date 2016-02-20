@@ -1,0 +1,100 @@
+- hosts: localhost
+  connection: local
+  gather_facts: no
+  sudo: no
+#  roles:
+#    - brew-install
+#    - homebrew
+#    - homebrew-cask
+#    - system
+#    - ruby-build
+
+  tasks:
+    brew-install:
+    - name: brew install
+      sudo: yes
+      shell: ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+
+    - name: brew cask install
+      sudo: yes
+      shell: brew install caskroom/cask/brew-cask
+
+    ruby-build:
+    - name: install ruby
+      sudo: yes
+      shell: rbenv install 2.1.5
+      environment:
+        PATH: "/usr/local/bin:{{ ansible_env.PATH }}"
+
+    system:
+    - name: Add bash_profile_for_rbenv1
+      sudo: yes
+      shell: echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.bash_profile
+
+    - name: Add bash_profile_for_rbenv2
+      sudo: yes
+      shell: echo 'if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi' >> ~/.bash_profile
+
+    - name: Install Rails
+      sudo: yes
+      command: gem install rails --no-rdoc --no-ri
+      environment:
+        PATH: "/usr/local/bin:{{ ansible_env.PATH }}"
+
+    # Tap external Homebrew repositories.
+    #
+    # e.g.
+    # - homebrew/binary
+    homebrew_repositories:
+
+    # Managed Homebrew packages.
+    #
+    # e.g.
+    # - package_name
+    # or
+    # { name: package_name, state: package_state, install_options: [with-baz, enable-debug] }
+    #
+    # state choices: [head, latest, present, absent, linked, unlinked] (default: latest)
+    # install_options: string or sequence (default: none)
+    homebrew_packages:
+      - readline
+      - openssl
+      - { name: openssl, state: linked, install_options: force }
+      - ansible
+      - git
+      - peco
+      - rbenv
+      - ruby-build
+      - vim
+      - mysql
+      - postgresql
+      - imagemagick
+      - sdl
+      - sdl_image
+      - sdl_mixer
+      - sdl_ttf
+
+    # Tap external Homebrew Cask repositories.
+    homebrew_cask_repositories:
+      - caskroom/versions
+
+    # Managed Homebrew Cask packages.
+    #
+    # e.g.
+    # - package_name
+    # or
+    # { name: package_name, state: package_state }
+    #
+    # state choices: [present, absent, installed, uninstalled] (default: present)
+    homebrew_cask_packages:
+      - firefox-ja
+      - google-chrome
+      - java6
+      - atom
+      - vagrant
+      - virtualbox
+      - sourcetree
+      - sequel-pro
+      - mi
+      - skype
+
