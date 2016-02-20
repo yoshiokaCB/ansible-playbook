@@ -2,14 +2,14 @@
   connection: local
   gather_facts: no
   sudo: no
-#  roles:
+  roles:
 #    - brew-install
-#    - homebrew
-#    - homebrew-cask
-#    - system
-#    - ruby-build
+    - homebrew
+    - homebrew-cask
+    - system
+    - ruby-build
 
-  tasks:
+  vars:
 #    brew-install:
 #    - name: brew install
 #      sudo: yes
